@@ -1,5 +1,7 @@
-server.port: 8888
+
 app.test: 1
+
 springdoc:
   swagger-ui:
+    enabled:
     path: /swagger-ui.html
