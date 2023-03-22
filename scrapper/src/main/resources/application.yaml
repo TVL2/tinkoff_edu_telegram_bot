@@ -3,3 +3,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+app:
+  scheduler:
+    interval: 5000
