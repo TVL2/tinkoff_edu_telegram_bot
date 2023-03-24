@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.configuration.service;
+package ru.tinkoff.edu.java.scrapper.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
