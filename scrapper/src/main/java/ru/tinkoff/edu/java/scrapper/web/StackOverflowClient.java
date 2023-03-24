@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.web;
 
 import jakarta.validation.constraints.NotNull;
-import ru.tinkoff.edu.java.scrapper.DTO.response.StackOverflowClientResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.StackOverflowClientResponse;
 
 public class StackOverflowClient extends AbstractWebClient {
     private static final String REGULAR_URL = "https://api.stackexchange.com/2.3/questions/4";

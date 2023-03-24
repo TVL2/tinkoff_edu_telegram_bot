@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.web;
 
 import jakarta.validation.constraints.NotNull;
-import ru.tinkoff.edu.java.scrapper.DTO.response.GitHubClientResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.GitHubClientResponse;
 
 public class GitHubClient extends AbstractWebClient {
     private static final String REGULAR_URL = "https://api.github.com/repos/TVL2/tinkoff_edu_telegram_bot";
