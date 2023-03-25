@@ -9,12 +9,17 @@ public class GitHubClient extends AbstractWebClient {
     private final String url;
 
     public GitHubClient() {
-        url = REGULAR_URL;
+        this(REGULAR_URL);
     }
 
     public GitHubClient(String baseURL) {
         url = baseURL;
     }
+
+    public GitHubClient newBaseUrl(String BaseUrl){
+        return new GitHubClient(BaseUrl);
+    }
+
 
     public String getUrl() {
         return url;

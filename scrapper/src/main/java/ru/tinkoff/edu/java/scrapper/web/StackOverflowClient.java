@@ -9,11 +9,15 @@ public class StackOverflowClient extends AbstractWebClient {
     private final String url;
 
     public StackOverflowClient() {
-        url = REGULAR_URL;
+        this(REGULAR_URL);
     }
 
     public StackOverflowClient(String baseURL) {
         url = baseURL;
+    }
+
+    public StackOverflowClient newBaseUrl(String BaseUrl){
+        return new StackOverflowClient(BaseUrl);
     }
 
     public String getUrl() {

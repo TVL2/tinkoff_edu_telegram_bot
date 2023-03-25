@@ -8,12 +8,12 @@ import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 public class ClientConfiguration {
 
     @Bean
-    public GitHubClient gitHubClient(GitHubClient gitHubClient) {
-        return gitHubClient;
+    public GitHubClient gitHubClient() {
+        return new GitHubClient();
     }
 
     @Bean
-    public StackOverflowClient stackOverflowClient(StackOverflowClient stackOverflowClient) {
-        return stackOverflowClient;
+    public StackOverflowClient stackOverflowClient() {
+        return new StackOverflowClient();
     }
 }
