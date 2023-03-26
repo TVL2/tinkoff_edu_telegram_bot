@@ -3,5 +3,6 @@ app.test: 1
 
 springdoc:
   swagger-ui:
-    enabled:
+    enabled: true
     path: /swagger-ui.html
+
