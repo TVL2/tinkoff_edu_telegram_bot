@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.bot.model;
 
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.scrapper_client.ScrapperClient;
 
@@ -25,9 +24,9 @@ public class StartCommand implements Command {
     }
 
 
-    public SendMessage messageToTheUser(Long id) {
+    public String messageToTheUser(Long id) {
         scrapperClient.addTelegramChat(id);
-        return new SendMessage(id, "Чат добавлен!");
+        return "Чат добавлен!";
     }
 
     @Override

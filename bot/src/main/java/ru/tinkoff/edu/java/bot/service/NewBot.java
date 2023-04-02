@@ -11,29 +11,16 @@ import ru.tinkoff.edu.java.bot.model.*;
 
 @Service
 public class NewBot extends TelegramBot {
-    String status;
-    HelpCommand helpCommand;
-    ListCommand listCommand;
-    StartCommand startCommand;
-    TrackCommand trackCommand;
-    UnTrackCommand unTrackCommand;
 
+    Commands commands;
 
     public NewBot(String botToken,
-                  HelpCommand helpCommand,
-                  ListCommand listCommand,
-                  StartCommand startCommand,
-                  TrackCommand trackCommand,
-                  UnTrackCommand unTrackCommand,
+                  Commands commands,
                   ChatMenu chatMenu) {
 
         super(botToken);
-        this.helpCommand = helpCommand;
-        this.listCommand = listCommand;
-        this.startCommand = startCommand;
-        this.trackCommand = trackCommand;
-        this.unTrackCommand = unTrackCommand;
         this.execute(chatMenu.getChatMenu());
+        this.commands = commands;
     }
 
 
@@ -50,45 +37,9 @@ public class NewBot extends TelegramBot {
         if (message != null && message.text() != null) {
             String command = message.text().split(" ")[0];
             Long id = message.chat().id();
-            commands(command, id);
+            this.execute(new SendMessage(id, commands.commands(command, id)));
         }
     }
 
 
-    private void commands(String command, Long id) {
-        switch (command) {
-            case "/start" -> {
-                this.execute(startCommand.messageToTheUser(id));
-                status = null;
-            }
-            case "/help" -> {
-                this.execute(helpCommand.messageToTheUser(id));
-                status = null;
-            }
-            case "/track" -> {
-                status = "/track";
-                this.execute(new SendMessage(id, "Введите ссылку для добавления или другую команду!"));
-            }
-            case "/untrack" -> {
-                status = "/untrack";
-                this.execute(new SendMessage(id, "Введите ссылку для удаления или другую команду!"));
-            }
-            case "/list" -> {
-                this.execute(listCommand.messageToTheUser(id));
-                status = null;
-            }
-            default -> {
-                switch (status) {
-                    case "/track" -> this.execute(trackCommand.messageToTheUser(id, command));
-                    case "/untrack" -> this.execute(unTrackCommand.messageToTheUser(id, command));
-                    default -> sendUnknownCommandMessage(id);
-                }
-            }
-        }
-
-    }
-
-    private void sendUnknownCommandMessage(Long id) {
-        this.execute(new SendMessage(id, "Команда неизвестна!"));
-    }
 }

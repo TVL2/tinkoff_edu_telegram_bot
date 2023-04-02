@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.bot.model;
 
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 
 
@@ -19,15 +18,15 @@ public class HelpCommand implements Command {
     }
 
 
-    public SendMessage messageToTheUser(Long id) {
-        return new SendMessage(id, """
+    public String messageToTheUser() {
+        return """
                 Список команд:
                 /start - добавить чат
                 /help - помощь
                 /track - добавить ссылку
                 /untrack - удалить ссылку
                 /list - получить список ссылок
-                """);
+                """;
     }
 
     @Override

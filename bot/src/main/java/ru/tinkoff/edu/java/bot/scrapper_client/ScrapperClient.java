@@ -67,6 +67,8 @@ public class ScrapperClient {
                 .post()
                 .uri(this.getUrl() + "/tg-chat/" + id).retrieve()
                 .bodyToMono(Void.class)
+                .onErrorResume(WebClientResponseException.class,
+                        ex -> Mono.empty())
                 .block();
 
     }
@@ -75,6 +77,8 @@ public class ScrapperClient {
                 .delete()
                 .uri(this.getUrl() + "/tg-chat/" + id).retrieve()
                 .bodyToMono(Void.class)
+                .onErrorResume(WebClientResponseException.class,
+                        ex -> Mono.empty())
                 .block();
     }
 

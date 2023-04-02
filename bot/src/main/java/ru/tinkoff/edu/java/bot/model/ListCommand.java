@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.bot.model;
 
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
@@ -27,11 +26,11 @@ public class ListCommand implements Command {
         return "получить список ссылок";
     }
 
-    public SendMessage messageToTheUser(Long id) {
+    public String messageToTheUser(Long id) {
         StringBuilder stringBuilder = new StringBuilder();
         ListLinksResponse response = scrapperClient.getLinks(id);
         if (response == null) {
-            return new SendMessage(id, "Добавьте чат, команда /start!");
+            return "Добавьте чат, команда /start!";
         }
         if (response.size() != 0) {
             List<LinkResponse> links = response.links();
@@ -39,9 +38,9 @@ public class ListCommand implements Command {
                 stringBuilder.append(i.url());
                 stringBuilder.append("\n");
             }
-            return new SendMessage(id, stringBuilder.toString());
+            return stringBuilder.toString();
         }
-        return new SendMessage(id, "Ссылки не найдены");
+        return "Ссылки не найдены";
     }
 
     @Override

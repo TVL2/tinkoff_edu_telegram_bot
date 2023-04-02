@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.bot.model;
 
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.scrapper_client.ScrapperClient;
@@ -27,15 +26,15 @@ public class UnTrackCommand implements Command {
     }
 
 
-    public SendMessage messageToTheUser(Long id, String link) {
+    public String messageToTheUser(Long id, String link) {
         if (link != null) {
             LinkResponse response = scrapperClient.removeLink(id, URI.create(link));
             if (response == null) {
-                return new SendMessage(id, "Ссылка не найдена!");
+                return "Ссылка не найдена!";
             }
-            return new SendMessage(id, "Cсылка " + response.url().toString() + " удалена!");
+            return "Cсылка " + response.url().toString() + " удалена!";
         }
-        return new SendMessage(id, " Ссылка некорректна!");
+        return " Ссылка некорректна!";
     }
 
     @Override
