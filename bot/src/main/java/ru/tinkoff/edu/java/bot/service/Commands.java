@@ -1,19 +1,18 @@
 package ru.tinkoff.edu.java.bot.service;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.bot.model.*;
 
 @Component
 public class Commands {
 
     String status = "x";
-    HelpCommand helpCommand;
-    ListCommand listCommand;
-    StartCommand startCommand;
-    TrackCommand trackCommand;
-    UnTrackCommand unTrackCommand;
-    UnKnownCommand unKnownCommand;
+    private final HelpCommand helpCommand;
+    private final ListCommand listCommand;
+    private final StartCommand startCommand;
+    private final TrackCommand trackCommand;
+    private final UnTrackCommand unTrackCommand;
+    private final UnKnownCommand unKnownCommand;
 
     public Commands(HelpCommand helpCommand,
                     ListCommand listCommand,
