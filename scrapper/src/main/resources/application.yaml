@@ -1,4 +1,7 @@
 app.test: 2
+
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -6,3 +9,6 @@ springdoc:
 app:
   scheduler:
     interval: 5000
+
+server:
+  port: 8081

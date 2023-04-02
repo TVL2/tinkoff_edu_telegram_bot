@@ -13,7 +13,10 @@ import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
+import ru.tinkoff.edu.java.scrapper.model.TelegramChat;
 import ru.tinkoff.edu.java.scrapper.service.TelegramChatsService;
+
+import java.util.HashMap;
 
 
 @RestController
@@ -101,10 +104,10 @@ public class ScrapperController {
             )
     }
     )
-    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") Long id, @Valid @RequestBody AddLinkRequest body) {
+    public LinkResponse addLink(@RequestHeader("Tg-Chat-Id") Long id, @Valid @RequestBody AddLinkRequest body) {
         LinkResponse link = new LinkResponse(body.getLink());
         telegramChats.getById(id).save(link);
-        return ResponseEntity.ok(link);
+        return link;
     }
 
 
@@ -136,5 +139,10 @@ public class ScrapperController {
 
 
     }
+    @GetMapping("/tg-chat")
+    public HashMap<Long, TelegramChat> getTelegramChats() {
+        return telegramChats.getAll();
+    }
+
 
 }

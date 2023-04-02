@@ -18,7 +18,9 @@ public class TelegramChatsService {
     }
 
     public void save(Long id) {
-        chats.put(id, new TelegramChat());
+        if (chats.get(id) == null) {
+            chats.put(id, new TelegramChat());
+        }
     }
 
     public void deleteById(Long id) {
