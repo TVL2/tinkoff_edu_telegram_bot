@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class ScrapperClient {
 
     private static final String REGULAR_URL = "http://localhost:8081";
+    private static final String HEADER_NAME = "Tg-Chat-Id";
     @NotNull
     private final String url;
 
@@ -51,7 +52,9 @@ public class ScrapperClient {
                 }).compress(true);
 
 
-        return WebClient.builder()
+        return WebClient
+                .builder()
+                .baseUrl(this.getUrl())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
     }
@@ -65,7 +68,8 @@ public class ScrapperClient {
     public Void addTelegramChat(Long id) {
         return webClientWithTimeout()
                 .post()
-                .uri(this.getUrl() + "/tg-chat/" + id).retrieve()
+                .uri(uriBuilder -> uriBuilder.path("/tg-chat/" + id).build())
+                .retrieve()
                 .bodyToMono(Void.class)
                 .onErrorResume(WebClientResponseException.class,
                         ex -> Mono.empty())
@@ -75,7 +79,8 @@ public class ScrapperClient {
     public Void deleteTelegramChat(Long id) {
         return webClientWithTimeout()
                 .delete()
-                .uri(this.getUrl() + "/tg-chat/" + id).retrieve()
+                .uri(uriBuilder -> uriBuilder.path("/tg-chat/" + id).build())
+                .retrieve()
                 .bodyToMono(Void.class)
                 .onErrorResume(WebClientResponseException.class,
                         ex -> Mono.empty())
@@ -86,11 +91,11 @@ public class ScrapperClient {
     public LinkResponse addLink(Long id, URI link) {
         return webClientWithTimeout()
                 .post()
-                .uri(this.getUrl() + "/links")
+                .uri(uriBuilder -> uriBuilder.path("/links").build())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(new AddLink(link)), AddLink.class)
-                .header("Tg-Chat-Id", id.toString())
+                .header(HEADER_NAME, id.toString())
                 .retrieve()
                 .bodyToMono(LinkResponse.class)
                 .onErrorResume(WebClientResponseException.class,
@@ -101,10 +106,10 @@ public class ScrapperClient {
     public LinkResponse removeLink(Long id, URI link) {
             return webClientWithTimeout()
                     .method(HttpMethod.DELETE)
-                    .uri(this.getUrl() + "/links")
+                    .uri(uriBuilder -> uriBuilder.path("/links").build())
                     .accept(MediaType.APPLICATION_JSON)
                     .body(Mono.just(new RemoveLink(link)), AddLink.class)
-                    .header("Tg-Chat-Id", id.toString())
+                    .header(HEADER_NAME, id.toString())
                     .retrieve()
                     .bodyToMono(LinkResponse.class)
                     .onErrorResume(WebClientResponseException.class,
@@ -117,9 +122,9 @@ public class ScrapperClient {
     public ListLinksResponse getLinks(Long id) {
         return webClientWithTimeout()
                 .get()
-                .uri(this.getUrl() + "/links")
+                .uri(uriBuilder -> uriBuilder.path("/links").build())
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Tg-Chat-Id", id.toString())
+                .header(HEADER_NAME, id.toString())
                 .retrieve()
                 .bodyToMono(ListLinksResponse.class)
                 .onErrorResume(WebClientResponseException.class,
