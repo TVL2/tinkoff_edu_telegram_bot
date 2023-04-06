@@ -6,3 +6,5 @@ springdoc:
     enabled: true
     path: /swagger-ui.html
 
+
+app.token: ${TOKEN}
