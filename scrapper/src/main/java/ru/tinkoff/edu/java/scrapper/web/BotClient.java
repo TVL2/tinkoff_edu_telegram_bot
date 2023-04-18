@@ -34,6 +34,7 @@ public class BotClient extends AbstractWebClient {
     public void postUpdate(Long id, URI url, String description, Long[] tgChatIds) {
         webClientWithTimeout()
                 .post()
+                .uri(this.getUrl())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(new LinkUpdate(id, url, description, tgChatIds)), LinkUpdate.class)
