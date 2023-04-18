@@ -9,11 +9,17 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.java.bot.dto.response.ApiErrorResponse;
 import ru.tinkoff.edu.java.bot.dto.request.LinkUpdate;
+import ru.tinkoff.edu.java.bot.service.NewBot;
 
 @RestControllerAdvice
 @RestController
 public class BotController {
 
+    private final NewBot bot;
+
+    public BotController(NewBot bot) {
+        this.bot = bot;
+    }
 
     @PostMapping("/updates")
     @Operation(summary = "Отправить обновление")
@@ -29,7 +35,7 @@ public class BotController {
     )
 
     public void update(@Valid @RequestBody LinkUpdate body) {
-
+        bot.sendALinkUpdateMessage(body);
     }
 
 
