@@ -19,7 +19,7 @@ public class JdbcLinkRepository {
 
 
     public void addLink(String link) {
-        jdbcTemplate.update("INSERT INTO link(url) VALUES(?)", link);
+        jdbcTemplate.update("INSERT INTO link(url, last_update) VALUES(?, ?)", link, new Timestamp(0));
     }
 
     public void removeLink(Long id) {

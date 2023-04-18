@@ -47,7 +47,7 @@ public class JdbsLinkUpdateService implements LinkUpdateService {
         }
     }
 
-    private Timestamp getUpdateTime(Link link) {
+    public Timestamp getUpdateTime(Link link) {
         var result = parser.parse(link.getLink().toString());
         if (result instanceof GitHubResponse) {
             return Timestamp.from(gitHubClient.fetchData().getUpdated_at().toInstant());

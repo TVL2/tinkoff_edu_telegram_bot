@@ -45,7 +45,6 @@ public class JdbcLinkService implements LinkService {
         Link link = linkRepository.getLink(linkRequest);
         chatLinksRepository.addChatLink(id, link.getId());
         return new LinkResponse(link.getId(), link.getLink());
-        //return new LinkResponse(33l, URI.create("link.getLink()"));
     }
 
     @Override
