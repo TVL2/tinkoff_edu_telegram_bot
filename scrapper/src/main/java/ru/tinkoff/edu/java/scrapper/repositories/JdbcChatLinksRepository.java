@@ -30,9 +30,17 @@ public class JdbcChatLinksRepository {
                 "SELECT id, url, last_update FROM link JOIN chat_links cl on link.id = cl.link_id WHERE cl.chat = ?",
                 new LinkMapper(), id).collect(Collectors.toList());
     }
+
     public Long[] findAllLinkChats(Long id) {
         return jdbcTemplate.queryForStream(
                 "SELECT chat FROM chat_links  WHERE link_id = ?",
                 new ChatMapper(), id).toArray(Long[]::new);
     }
+
+    public Boolean findChatAndLink(Long chatId , Long linkId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT EXISTS (SELECT * FROM chat_links WHERE chat = ? AND link_id = ?)",
+                Boolean.class, chatId, linkId);
+    }
+
 }

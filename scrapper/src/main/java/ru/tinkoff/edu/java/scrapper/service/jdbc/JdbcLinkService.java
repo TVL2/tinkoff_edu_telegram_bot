@@ -10,26 +10,32 @@ import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.repositories.JdbcChatLinksRepository;
+import ru.tinkoff.edu.java.scrapper.repositories.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.repositories.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
+import ru.tinkoff.edu.java.scrapper.util.exceptions.ChatDoesNotExist;
 
 
-import java.net.URI;
 import java.util.List;
 
 @Repository
 @AllArgsConstructor
+@Transactional
 public class JdbcLinkService implements LinkService {
+
 
     private final JdbcChatLinksRepository chatLinksRepository;
     private final JdbcLinkRepository linkRepository;
+    private final JdbcChatRepository chatRepository;
     private final URLParser parser;
 
 
     @Override
-    @Transactional
     public ListLinksResponse getLinksByChatId(Long id) {
+        if (!chatRepository.checkForAChat(id)) {
+            throw new ChatDoesNotExist("Чат не существует");
+        }
         List<Link> links = chatLinksRepository.findAllChatLinks(id);
         return new ListLinksResponse(
                 links.stream().map(link -> new LinkResponse(link.getId(), link.getLink())).toList()
@@ -37,18 +43,24 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    @Transactional
     public LinkResponse saveLink(Long id, AddLinkRequest addLinkRequest) {
+        if (!chatRepository.checkForAChat(id)) {
+            throw new ChatDoesNotExist("Чат не существует");
+        }
         String linkRequest = addLinkRequest.getLink().toString();
-        if (parser.parse(linkRequest) == null) throw new BadLink("Неверная ссылка");
+        if (parser.parse(linkRequest) == null) {
+            throw new BadLink("Неверная ссылка");
+        }
         linkRepository.addLink(linkRequest);
         Link link = linkRepository.getLink(linkRequest);
+        if (chatLinksRepository.findChatAndLink(id, link.getId())) {
+            return new LinkResponse(link.getId(), link.getLink());
+        }
         chatLinksRepository.addChatLink(id, link.getId());
         return new LinkResponse(link.getId(), link.getLink());
     }
 
     @Override
-    @Transactional
     public LinkResponse deleteLink(Long id, RemoveLinkRequest removeLinkRequest) {
         String linkRequest = removeLinkRequest.getLink().toString();
         if (parser.parse(linkRequest) == null) throw new BadLink("Неверная ссылка");
