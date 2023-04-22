@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.java.scrapper.service.jdbc.JdbcLinkUpdateService;
+
 
 
 @Slf4j
@@ -15,7 +15,7 @@ import ru.tinkoff.edu.java.scrapper.service.jdbc.JdbcLinkUpdateService;
 @AllArgsConstructor
 public class LinkUpdaterScheduler {
 
-    private final JdbcLinkUpdateService linkUpdateService;
+    private final LinkUpdateService linkUpdateService;
 
     @Scheduled(fixedDelayString = "#{@schedulerIntervalMs}")
     @Async
