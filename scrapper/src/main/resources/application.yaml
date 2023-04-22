@@ -6,12 +6,14 @@ springdoc:
 
 app:
   scheduler:
-    interval: 50000
+    interval: 10000
 
 server:
   port: 8081
 
 spring:
+  liquibase:
+    enabled: false
   datasource:
     password: admin
     username: user

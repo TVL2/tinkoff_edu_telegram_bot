@@ -19,7 +19,7 @@ public class JdbcLinkRepository {
 
 
     public void addLink(String link) {
-        jdbcTemplate.update("INSERT INTO link(url, last_update) VALUES(?, ?)", link, new Timestamp(0));
+        jdbcTemplate.update("INSERT INTO link(url, last_update) VALUES(?, ?) ON CONFLICT (url) DO NOTHING", link, new Timestamp(0));
     }
 
     public void removeLink(Long id) {
@@ -40,5 +40,9 @@ public class JdbcLinkRepository {
 
     public void updateLinkUpdateTime(Timestamp newTime, Long id) {
         jdbcTemplate.update("UPDATE link SET last_update = ? WHERE id = ?", newTime, id);
+    }
+
+    public Boolean checkForALink(String link) {
+        return jdbcTemplate.queryForObject("SELECT EXISTS (SELECT * FROM link WHERE url = ?)", Boolean.class, link);
     }
 }

@@ -10,7 +10,7 @@ import java.net.URI;
 
 
 public class BotClient extends AbstractWebClient {
-    private static final String REGULAR_URL = "https://localhost:8080/updates";
+    private static final String REGULAR_URL = "http://localhost:8080/updates";
     @NotNull
     private final String url;
 
@@ -31,9 +31,10 @@ public class BotClient extends AbstractWebClient {
         return url;
     }
 
-    public void postUpdate(Long id, URI url, String description, Long[] tgChatIds) {
-        webClientWithTimeout()
+    public Void postUpdate(Long id, URI url, String description, Long[] tgChatIds) {
+        return webClientWithTimeout()
                 .post()
+                .uri(this.getUrl())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(new LinkUpdate(id, url, description, tgChatIds)), LinkUpdate.class)
