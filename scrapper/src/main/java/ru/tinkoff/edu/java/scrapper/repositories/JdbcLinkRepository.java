@@ -41,4 +41,8 @@ public class JdbcLinkRepository {
     public void updateLinkUpdateTime(Timestamp newTime, Long id) {
         jdbcTemplate.update("UPDATE link SET last_update = ? WHERE id = ?", newTime, id);
     }
+
+    public Boolean checkForALink(String link) {
+        return jdbcTemplate.queryForObject("SELECT EXISTS (SELECT * FROM link WHERE url = ?)", Boolean.class, link);
+    }
 }

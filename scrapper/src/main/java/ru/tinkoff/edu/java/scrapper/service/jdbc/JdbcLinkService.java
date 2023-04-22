@@ -15,8 +15,10 @@ import ru.tinkoff.edu.java.scrapper.repositories.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.ChatDoesNotExist;
+import ru.tinkoff.edu.java.scrapper.util.exceptions.LinkDoesNotExist;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -63,9 +65,24 @@ public class JdbcLinkService implements LinkService {
     @Override
     public LinkResponse deleteLink(Long id, RemoveLinkRequest removeLinkRequest) {
         String linkRequest = removeLinkRequest.getLink().toString();
-        if (parser.parse(linkRequest) == null) throw new BadLink("Неверная ссылка");
+        if (parser.parse(linkRequest) == null) {
+            throw new BadLink("Неверная ссылка");
+        }
+        if (!chatRepository.checkForAChat(id)) {
+            throw new ChatDoesNotExist("Чат не существует");
+        }
+        if (!linkRepository.checkForALink(linkRequest)) {
+            throw new LinkDoesNotExist("Ссылка не найдена!");
+        }
         Link link = linkRepository.getLink(linkRequest);
+        if (!chatLinksRepository.findChatAndLink(id, link.getId())) {
+            throw new LinkDoesNotExist("Ссылка не найдена!");
+        }
         chatLinksRepository.removeChatLink(id, link.getId());
+
+        if(Arrays.stream(chatLinksRepository.findAllLinkChats(link.getId())).toList().isEmpty()){
+            linkRepository.removeLink(link.getId());
+        }
         return new LinkResponse(link.getId(), link.getLink());
     }
 }
