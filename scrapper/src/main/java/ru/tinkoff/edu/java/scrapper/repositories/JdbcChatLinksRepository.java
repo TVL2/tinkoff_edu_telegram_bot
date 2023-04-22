@@ -3,8 +3,9 @@ package ru.tinkoff.edu.java.scrapper.repositories;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.tinkoff.edu.java.scrapper.entity.ChatofLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
-import ru.tinkoff.edu.java.scrapper.mappers.ChatMapper;
+import ru.tinkoff.edu.java.scrapper.mappers.ChatofLinkMapper;
 import ru.tinkoff.edu.java.scrapper.mappers.LinkMapper;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class JdbcChatLinksRepository {
     public Long[] findAllLinkChats(Long id) {
         return jdbcTemplate.queryForStream(
                 "SELECT chat FROM chat_links  WHERE link_id = ?",
-                new ChatMapper(), id).toArray(Long[]::new);
+                new ChatofLinkMapper(), id).map(ChatofLink::getChat).toArray(Long[]::new);
     }
 
     public Boolean findChatAndLink(Long chatId , Long linkId) {

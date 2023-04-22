@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class JdbsLinkUpdateService implements LinkUpdateService {
+public class JdbcLinkUpdateService implements LinkUpdateService {
 
     private final JdbcLinkRepository linkRepository;
     private final JdbcChatLinksRepository jdbcChatLinksRepository;
