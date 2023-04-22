@@ -12,6 +12,8 @@ server:
   port: 8081
 
 spring:
+  liquibase:
+    enabled: false
   datasource:
     password: admin
     username: user

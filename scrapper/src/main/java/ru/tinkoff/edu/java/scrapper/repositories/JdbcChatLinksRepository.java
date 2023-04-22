@@ -3,8 +3,10 @@ package ru.tinkoff.edu.java.scrapper.repositories;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.tinkoff.edu.java.scrapper.entity.ChatforUpdate;
 import ru.tinkoff.edu.java.scrapper.entity.ChatofLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.mappers.ChatforUpdateMapper;
 import ru.tinkoff.edu.java.scrapper.mappers.ChatofLinkMapper;
 import ru.tinkoff.edu.java.scrapper.mappers.LinkMapper;
 
@@ -25,6 +27,10 @@ public class JdbcChatLinksRepository {
         jdbcTemplate.update("DELETE FROM chat_links WHERE chat = ? AND link_id = ?", chatId, linkId);
 
     }
+    public List<ChatofLink> findAll() {
+        return jdbcTemplate.query("SELECT * FROM chat_links", new ChatofLinkMapper());
+    }
+
 
     public List<Link> findAllChatLinks(Long id) {
         return jdbcTemplate.queryForStream(
@@ -35,7 +41,7 @@ public class JdbcChatLinksRepository {
     public Long[] findAllLinkChats(Long id) {
         return jdbcTemplate.queryForStream(
                 "SELECT chat FROM chat_links  WHERE link_id = ?",
-                new ChatofLinkMapper(), id).map(ChatofLink::getChat).toArray(Long[]::new);
+                new ChatforUpdateMapper(), id).map(ChatforUpdate::getChat).toArray(Long[]::new);
     }
 
     public Boolean findChatAndLink(Long chatId , Long linkId) {

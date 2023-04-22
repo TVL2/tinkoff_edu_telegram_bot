@@ -13,6 +13,7 @@ public class ChatofLinkMapper implements RowMapper<ChatofLink> {
     public ChatofLink mapRow(ResultSet rs, int rowNum) throws SQLException {
         ChatofLink chatofLink = new ChatofLink();
         chatofLink.setChat(rs.getLong("chat"));
+        chatofLink.setLink_id(rs.getLong("link_id"));
         return chatofLink;
     }
 }
