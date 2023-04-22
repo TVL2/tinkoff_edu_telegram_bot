@@ -104,6 +104,7 @@ public class ScrapperClient {
     }
 
     public LinkResponse removeLink(Long id, URI link) {
+
         return webClientWithTimeout()
                 .method(HttpMethod.DELETE)
                 .uri(uriBuilder -> uriBuilder.path("/links").build())

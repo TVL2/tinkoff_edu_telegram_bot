@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import ru.tinkoff.edu.java.bot.configuration.ApplicationConfig;
-import ru.tinkoff.edu.java.bot.service.NewBot;
 
 
 @SpringBootApplication
@@ -13,8 +12,7 @@ import ru.tinkoff.edu.java.bot.service.NewBot;
 public class BotApplication {
     public static void main(String[] args) {
         var ctx = SpringApplication.run(BotApplication.class, args);
-        NewBot bot = ctx.getBean(NewBot.class);
-        bot.run();
+
 
 
 
