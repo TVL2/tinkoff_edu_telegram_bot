@@ -36,6 +36,8 @@ public class PostgreSqlEnvironment {
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
+
+
         }
     }
 }
