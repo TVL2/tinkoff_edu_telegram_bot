@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service.jdbc;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.parser.responses.GitHubResponse;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Primary
 public class JdbcLinkUpdateService implements LinkUpdateService {
 
     private final JdbcLinkRepository linkRepository;
