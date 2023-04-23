@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.repositories;
+package ru.tinkoff.edu.java.scrapper.repositories.jdbc;
 
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
