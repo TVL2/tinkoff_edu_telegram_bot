@@ -1,14 +1,13 @@
-package ru.tinkoff.edu.java.scrapper.service.jdbc;
+package ru.tinkoff.edu.java.scrapper.service.jooq;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.parser.responses.GitHubResponse;
 import ru.tinkoff.edu.java.parser.responses.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatLinksRepository;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcLinkRepository;
+import ru.tinkoff.edu.java.scrapper.repositories.jooq.JooqChatLinksRepository;
+import ru.tinkoff.edu.java.scrapper.repositories.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdateService;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
 import ru.tinkoff.edu.java.scrapper.web.BotClient;
@@ -21,16 +20,16 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Primary
-public class JdbcLinkUpdateService implements LinkUpdateService {
+public class JooqLinkUpdateService implements LinkUpdateService {
 
-    private final JdbcLinkRepository linkRepository;
-    private final JdbcChatLinksRepository jdbcChatLinksRepository;
+    private final JooqLinkRepository linkRepository;
+    private final JooqChatLinksRepository jdbcChatLinksRepository;
     private final BotClient botClient;
     private final URLParser parser;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final Long timeLimitMs = 50000L;
+
 
     public void updateLinks() {
         Timestamp temporaryFacet = new Timestamp(System.currentTimeMillis() - timeLimitMs);

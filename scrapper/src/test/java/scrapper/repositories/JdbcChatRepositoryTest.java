@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.java.scrapper.repositories.JdbcChatRepository;
+import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatRepository;
 import scrapper.JdbcRepositoryEnvironment;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;

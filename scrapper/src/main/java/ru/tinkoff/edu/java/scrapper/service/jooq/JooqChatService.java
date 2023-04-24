@@ -1,24 +1,21 @@
-package ru.tinkoff.edu.java.scrapper.service.jdbc;
+package ru.tinkoff.edu.java.scrapper.service.jooq;
 
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatRepository;
+import ru.tinkoff.edu.java.scrapper.repositories.jooq.JooqChatRepository;
 import ru.tinkoff.edu.java.scrapper.service.ChatService;
 
-
-import java.util.*;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 @Transactional
-@Primary
-public class JdbcChatService implements ChatService {
+public class JooqChatService implements ChatService {
 
-    private final JdbcChatRepository chatRepository;
+    private final JooqChatRepository chatRepository;
 
     @Override
     public List<Chat> getAll() {
