@@ -5,13 +5,13 @@ CREATE TABLE IF NOT EXISTS chat
 
 CREATE TABLE IF NOT EXISTS link
 (
-    id          BIGINT PRIMARY KEY,
-    url         text UNIQUE,
-    last_update time
+    id          BIGSERIAL PRIMARY KEY,
+    url         varchar(500) UNIQUE,
+    last_update timestamp
 );
 
 CREATE TABLE IF NOT EXISTS chat_links
 (
-    chat    BIGINT REFERENCES chat (id),
+    chat    BIGINT REFERENCES chat (id) ON DELETE CASCADE,
     link_id BIGINT REFERENCES link (id)
 )

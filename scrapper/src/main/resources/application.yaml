@@ -1,14 +1,22 @@
 app.test: 2
 
-
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
 app:
   scheduler:
-    interval: 5000
+    interval: 10000
 
 server:
   port: 8081
+
+spring:
+  liquibase:
+    enabled: false
+  datasource:
+    password: admin
+    username: user
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/scrapper
+

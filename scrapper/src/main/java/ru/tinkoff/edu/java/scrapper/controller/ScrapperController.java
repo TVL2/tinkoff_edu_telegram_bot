@@ -6,27 +6,30 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
-import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.scrapper.model.TelegramChat;
-import ru.tinkoff.edu.java.scrapper.service.TelegramChatsService;
+import ru.tinkoff.edu.java.scrapper.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.service.ChatService;
+import ru.tinkoff.edu.java.scrapper.service.LinkService;
 
-import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
 public class ScrapperController {
 
-    TelegramChatsService telegramChats;
+    private final ChatService telegramChats;
+    private final LinkService linkService;
 
-    public ScrapperController(TelegramChatsService telegramChats) {
+    public ScrapperController(ChatService telegramChats, LinkService linkService) {
         this.telegramChats = telegramChats;
+        this.linkService = linkService;
     }
+
 
     @PostMapping("/tg-chat/{id}")
     @Operation(summary = "Зарегистрировать чат")
@@ -84,7 +87,7 @@ public class ScrapperController {
     }
     )
     public ListLinksResponse getLinksByTelegramChatId(@RequestHeader("Tg-Chat-Id") @Valid Long id) {
-        return new ListLinksResponse(telegramChats.getById(id));
+        return linkService.getLinksByChatId(id);
     }
 
 
@@ -105,9 +108,8 @@ public class ScrapperController {
     }
     )
     public LinkResponse addLink(@RequestHeader("Tg-Chat-Id") Long id, @Valid @RequestBody AddLinkRequest body) {
-        LinkResponse link = new LinkResponse(body.getLink());
-        telegramChats.getById(id).save(link);
-        return link;
+        return linkService.saveLink(id, body);
+
     }
 
 
@@ -133,14 +135,12 @@ public class ScrapperController {
     }
     )
     public LinkResponse deleteLink(@RequestHeader("Tg-Chat-Id") Long id, @Valid @RequestBody RemoveLinkRequest body) {
-        System.out.println(body.getLink());
-        LinkResponse link = new LinkResponse(body.getLink());
-        return telegramChats.getById(id).deleteByURL(link.getUrl());
-
+        return linkService.deleteLink(id, body);
 
     }
+
     @GetMapping("/tg-chat")
-    public HashMap<Long, TelegramChat> getTelegramChats() {
+    public List<Chat> getTelegramChats() {
         return telegramChats.getAll();
     }
 

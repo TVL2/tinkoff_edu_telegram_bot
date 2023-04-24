@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.edu.java.bot.dto.request.LinkUpdate;
 import ru.tinkoff.edu.java.bot.model.*;
 
 
@@ -41,5 +42,11 @@ public class NewBot extends TelegramBot {
         }
     }
 
+    public void sendALinkUpdateMessage(LinkUpdate linkUpdate) {
+        String link = linkUpdate.getUrl().toString();
+        for (Long id : linkUpdate.getTgChatIds()) {
+            this.execute(new SendMessage(id, "Ссылка " + link + " обновлена"));
+        }
+    }
 
 }

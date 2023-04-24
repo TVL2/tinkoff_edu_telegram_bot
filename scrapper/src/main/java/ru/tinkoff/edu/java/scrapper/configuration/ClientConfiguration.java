@@ -3,6 +3,7 @@ package ru.tinkoff.edu.java.scrapper.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.edu.java.scrapper.web.BotClient;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 @Component
@@ -16,5 +17,10 @@ public class ClientConfiguration {
     @Bean
     public StackOverflowClient stackOverflowClient() {
         return new StackOverflowClient();
+    }
+
+    @Bean
+    public BotClient botClient() {
+        return new BotClient();
     }
 }

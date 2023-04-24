@@ -6,18 +6,17 @@ import java.net.URI;
 
 
 public class LinkResponse {
-    static long counter = 0;
+
     @NotNull
     private final Long id;
     @NotNull
     private final URI url;
 
-    public LinkResponse(URI url) {
-        this.id = counter;
+    public LinkResponse(Long id, URI url) {
+        this.id = id;
 
         this.url = url;
 
-        counter++;
     }
 
     public Long getId() {

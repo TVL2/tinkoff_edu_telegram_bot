@@ -104,17 +104,18 @@ public class ScrapperClient {
     }
 
     public LinkResponse removeLink(Long id, URI link) {
-            return webClientWithTimeout()
-                    .method(HttpMethod.DELETE)
-                    .uri(uriBuilder -> uriBuilder.path("/links").build())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .body(Mono.just(new RemoveLink(link)), AddLink.class)
-                    .header(HEADER_NAME, id.toString())
-                    .retrieve()
-                    .bodyToMono(LinkResponse.class)
-                    .onErrorResume(WebClientResponseException.class,
-                            ex -> Mono.empty())
-                    .block();
+
+        return webClientWithTimeout()
+                .method(HttpMethod.DELETE)
+                .uri(uriBuilder -> uriBuilder.path("/links").build())
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(new RemoveLink(link)), AddLink.class)
+                .header(HEADER_NAME, id.toString())
+                .retrieve()
+                .bodyToMono(LinkResponse.class)
+                .onErrorResume(WebClientResponseException.class,
+                        ex -> Mono.empty())
+                .block();
 
 
     }
