@@ -1,38 +1,46 @@
-package ru.tinkoff.edu.java.scrapper.service.jdbc;
+package ru.tinkoff.edu.java.scrapper.service.jpa;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.parser.responses.GitHubResponse;
 import ru.tinkoff.edu.java.parser.responses.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatLinksRepository;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcLinkRepository;
+import ru.tinkoff.edu.java.scrapper.entity.jpa.JpaChatofLink;
+import ru.tinkoff.edu.java.scrapper.entity.jpa.JpaLink;
+import ru.tinkoff.edu.java.scrapper.repositories.jpa.ChatLinksRepository;
+import ru.tinkoff.edu.java.scrapper.repositories.jpa.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdateService;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
 import ru.tinkoff.edu.java.scrapper.web.BotClient;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 
+import java.net.URI;
 import java.sql.Timestamp;
 import java.util.List;
 
 
 @Service
 @AllArgsConstructor
-public class JdbcLinkUpdateService implements LinkUpdateService {
+@Primary
+public class JpaLinkUpdateService implements LinkUpdateService {
 
-    private final JdbcLinkRepository linkRepository;
-    private final JdbcChatLinksRepository jdbcChatLinksRepository;
+    private final LinkRepository linkRepository;
+    private final ChatLinksRepository chatLinksRepository;
     private final BotClient botClient;
     private final URLParser parser;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final Long timeLimitMs = 50000L;
 
+    @Override
     public void updateLinks() {
         Timestamp temporaryFacet = new Timestamp(System.currentTimeMillis() - timeLimitMs);
-        List<Link> linksForUpdate = linkRepository.findAllForUpdate(temporaryFacet);
+        List<JpaLink> jpaLinksForUpdate = linkRepository.findAllForUpdate(temporaryFacet);
+        List<Link> linksForUpdate = jpaLinksForUpdate.stream().map(link -> new Link(link.getId(), URI.create(link.getLink()), link.getLastUpdate())).toList();
+        System.out.println(linksForUpdate.get(0).getId());
         for (Link link : linksForUpdate) {
             Timestamp newTime = getUpdateTime(link);
             if (link.getLastUpdate().compareTo(newTime) < 0) {
@@ -41,12 +49,13 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
                         link.getId(),
                         link.getLink(),
                         "Обновление",
-                        jdbcChatLinksRepository.findAllLinkChats(link.getId())
+                        chatLinksRepository.findAllLinkChats(link.getId()).stream().map(JpaChatofLink::getChat).toArray(Long[]::new)
                 );
             }
         }
     }
 
+    @Override
     public Timestamp getUpdateTime(Link link) {
         var result = parser.parse(link.getLink().toString());
         if (result instanceof GitHubResponse) {
