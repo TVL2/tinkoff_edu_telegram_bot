@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 @JdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JdbcRepositoryEnvironment extends IntegrationEnvironment {
-    @ComponentScan("ru.tinkoff.edu.java.scrapper.repositories")
+    @ComponentScan("ru.tinkoff.edu.java.scrapper.repositories.jdbc")
     @Configuration
     static class JdbcRepositoryTestConfiguration {}
 }

@@ -1,8 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service.jpa;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
@@ -23,10 +21,9 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Repository
+
 @AllArgsConstructor
 @Transactional
-@Primary
 public class JpaLinkService implements LinkService {
 
 

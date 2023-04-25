@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service.jooq;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.parser.responses.GitHubResponse;
 import ru.tinkoff.edu.java.parser.responses.StackOverflowResponse;
@@ -18,7 +17,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 
-@Service
+
 @AllArgsConstructor
 public class JooqLinkUpdateService implements LinkUpdateService {
 

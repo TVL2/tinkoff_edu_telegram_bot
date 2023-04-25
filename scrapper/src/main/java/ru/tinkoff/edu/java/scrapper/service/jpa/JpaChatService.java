@@ -2,8 +2,6 @@ package ru.tinkoff.edu.java.scrapper.service.jpa;
 
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.entity.jpa.JpaChat;
@@ -12,10 +10,9 @@ import ru.tinkoff.edu.java.scrapper.service.ChatService;
 
 import java.util.List;
 
-@Service
+
 @AllArgsConstructor
 @Transactional
-@Primary
 public class JpaChatService implements ChatService {
 
     private final ChatRepository chatRepository;

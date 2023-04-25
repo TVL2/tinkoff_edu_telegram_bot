@@ -1,8 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service.jpa;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.parser.responses.GitHubResponse;
 import ru.tinkoff.edu.java.parser.responses.StackOverflowResponse;
@@ -22,9 +20,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 
-@Service
+
 @AllArgsConstructor
-@Primary
 public class JpaLinkUpdateService implements LinkUpdateService {
 
     private final LinkRepository linkRepository;
