@@ -1,18 +1,21 @@
-package scrapper.repositories.jpa;
+package ru.tinkoff.edu.java.scrapper.repositories.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.entity.jpa.JpaChat;
-import ru.tinkoff.edu.java.scrapper.repositories.jpa.ChatRepository;
-import scrapper.JpaRepositoryEnvironment;
+import ru.tinkoff.edu.java.scrapper.repositories.IntegrationEnvironment;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class JpaChatRepositoryTest extends JpaRepositoryEnvironment {
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class JpaChatRepositoryTest extends IntegrationEnvironment {
 
     @Autowired
     ChatRepository chatRepository;
@@ -21,7 +24,7 @@ public class JpaChatRepositoryTest extends JpaRepositoryEnvironment {
     @Test
     @Transactional
     @Rollback
-    void addChatTest() {
+    public void addChatTest() {
         assertThat(chatRepository.findAll()).isEmpty();
         chatRepository.save(new JpaChat(5L));
         assertEquals(1, chatRepository.findAll().size());
@@ -30,7 +33,7 @@ public class JpaChatRepositoryTest extends JpaRepositoryEnvironment {
     @Test
     @Transactional
     @Rollback
-    void removeChatTest() {
+    public void removeChatTest() {
         chatRepository.save(new JpaChat(5L));
         assertEquals(1, chatRepository.findAll().size());
         chatRepository.deleteById(5L);
@@ -40,7 +43,7 @@ public class JpaChatRepositoryTest extends JpaRepositoryEnvironment {
     @Test
     @Transactional
     @Rollback
-    void findAllTest() {
+    public void findAllTest() {
         chatRepository.save(new JpaChat(5L));
         chatRepository.save(new JpaChat(7L));
         assertEquals(5, chatRepository.findAll().get(0).getId());

@@ -37,9 +37,9 @@ public class JpaLinkUpdateService implements LinkUpdateService {
         Timestamp temporaryFacet = new Timestamp(System.currentTimeMillis() - timeLimitMs);
         List<JpaLink> jpaLinksForUpdate = linkRepository.findAllForUpdate(temporaryFacet);
         List<Link> linksForUpdate = jpaLinksForUpdate.stream().map(link -> new Link(link.getId(), URI.create(link.getLink()), link.getLastUpdate())).toList();
-        System.out.println(linksForUpdate.get(0).getId());
         for (Link link : linksForUpdate) {
             Timestamp newTime = getUpdateTime(link);
+            System.out.println(newTime);
             if (link.getLastUpdate().compareTo(newTime) < 0) {
                 linkRepository.updateLinkUpdateTime(newTime, link.getId());
                 botClient.postUpdate(

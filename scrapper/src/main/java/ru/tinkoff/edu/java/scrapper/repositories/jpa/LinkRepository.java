@@ -1,18 +1,16 @@
 package ru.tinkoff.edu.java.scrapper.repositories.jpa;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.entity.jpa.JpaLink;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-@Repository
-@ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jpa")
+
+
 public interface LinkRepository extends JpaRepository<JpaLink, Long> {
 
     @Modifying
@@ -25,8 +23,8 @@ public interface LinkRepository extends JpaRepository<JpaLink, Long> {
     List<JpaLink> findAllForUpdate(@Param("newTime") Timestamp newTime);
 
     @Modifying
-    @Query(value="UPDATE link SET last_update = :newTime WHERE id = :linkId",nativeQuery = true)
-    void updateLinkUpdateTime(@Param("newTime") Timestamp newTime, @Param("linkId")Long linkId);
+    @Query(value="UPDATE link SET last_update = :newTime WHERE id = :id",nativeQuery = true)
+    int updateLinkUpdateTime(@Param("newTime") Timestamp newTime, @Param("id")Long id);
 
 
     JpaLink findByUrl(String linkRequest);
