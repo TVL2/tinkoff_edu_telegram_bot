@@ -51,7 +51,16 @@ public class JpaLinkRepositoryTest extends IntegrationEnvironment {
         assertEquals("link2", linkRepository.findAll().get(1).getLink());
     }
 
-
+    @Test
+    @Transactional
+    @Rollback
+    void newUpdateTimeTest() {
+        linkRepository.saveLink("link1",new Timestamp(0));
+        assertEquals(new Timestamp(0), linkRepository.findAll().get(0).getLastUpdate());
+        Long id = linkRepository.findAll().get(0).getId();
+        linkRepository.updateLinkUpdateTime(new Timestamp(1555), id);
+        assertEquals(new Timestamp(1555), linkRepository.findAll().get(0).getLastUpdate());
+    }
 
 
 

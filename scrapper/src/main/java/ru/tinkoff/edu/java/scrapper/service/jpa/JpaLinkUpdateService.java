@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service.jpa;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.parser.URLParser;
 import ru.tinkoff.edu.java.parser.responses.GitHubResponse;
 import ru.tinkoff.edu.java.parser.responses.StackOverflowResponse;
@@ -33,20 +34,21 @@ public class JpaLinkUpdateService implements LinkUpdateService {
     private final Long timeLimitMs = 50000L;
 
     @Override
+    @Transactional
     public void updateLinks() {
         Timestamp temporaryFacet = new Timestamp(System.currentTimeMillis() - timeLimitMs);
         List<JpaLink> jpaLinksForUpdate = linkRepository.findAllForUpdate(temporaryFacet);
         List<Link> linksForUpdate = jpaLinksForUpdate.stream().map(link -> new Link(link.getId(), URI.create(link.getLink()), link.getLastUpdate())).toList();
         for (Link link : linksForUpdate) {
             Timestamp newTime = getUpdateTime(link);
-            System.out.println(newTime);
             if (link.getLastUpdate().compareTo(newTime) < 0) {
-                linkRepository.updateLinkUpdateTime(newTime, link.getId());
+                Long id = link.getId();
+                linkRepository.updateLinkUpdateTime(newTime, id);
                 botClient.postUpdate(
-                        link.getId(),
+                        id,
                         link.getLink(),
                         "Обновление",
-                        chatLinksRepository.findAllLinkChats(link.getId()).stream().map(JpaChatofLink::getChat).toArray(Long[]::new)
+                        chatLinksRepository.findAllLinkChats(id).stream().map(JpaChatofLink::getChat).toArray(Long[]::new)
                 );
             }
         }

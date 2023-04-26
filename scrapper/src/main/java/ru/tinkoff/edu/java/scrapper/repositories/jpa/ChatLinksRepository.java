@@ -21,6 +21,6 @@ public interface ChatLinksRepository extends JpaRepository<JpaChatofLink, Long> 
     List<JpaChatofLink> findByChat(Long id);
 
     @Modifying
-    @Query(value="SELECT chat FROM chat_links  WHERE link_id = :id",nativeQuery = true)
-    List<JpaChatofLink> findAllLinkChats(@Param("id") Long id);
+    @Query(value="SELECT * FROM chat_links  WHERE link_id = :link_id",nativeQuery = true)
+    List<JpaChatofLink> findAllLinkChats(@Param("link_id") Long id);
 }

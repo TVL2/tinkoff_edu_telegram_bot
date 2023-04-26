@@ -22,9 +22,10 @@ public interface LinkRepository extends JpaRepository<JpaLink, Long> {
     @Query(value="SELECT id, url, last_update FROM link WHERE last_update < :newTime",nativeQuery = true)
     List<JpaLink> findAllForUpdate(@Param("newTime") Timestamp newTime);
 
-    @Modifying
+
+    @Modifying(clearAutomatically = true)
     @Query(value="UPDATE link SET last_update = :newTime WHERE id = :id",nativeQuery = true)
-    int updateLinkUpdateTime(@Param("newTime") Timestamp newTime, @Param("id")Long id);
+    void updateLinkUpdateTime(@Param("newTime") Timestamp newTime, @Param("id")Long id);
 
 
     JpaLink findByUrl(String linkRequest);
