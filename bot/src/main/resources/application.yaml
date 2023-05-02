@@ -7,4 +7,8 @@ springdoc:
     path: /swagger-ui.html
 
 
-app.token: ${TOKEN}
+app:
+  token: ${TOKEN}
+  rabbit-queue: queue
+  rabbit-exchange: exchange
+  use-queue: true

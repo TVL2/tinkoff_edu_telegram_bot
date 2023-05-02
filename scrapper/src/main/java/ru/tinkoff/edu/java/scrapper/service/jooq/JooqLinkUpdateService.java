@@ -8,8 +8,8 @@ import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.repositories.jooq.JooqChatLinksRepository;
 import ru.tinkoff.edu.java.scrapper.repositories.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdateService;
+import ru.tinkoff.edu.java.scrapper.service.senders.SenderOfTheLinkUpdate;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
-import ru.tinkoff.edu.java.scrapper.web.BotClient;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 
@@ -23,11 +23,12 @@ public class JooqLinkUpdateService implements LinkUpdateService {
 
     private final JooqLinkRepository linkRepository;
     private final JooqChatLinksRepository jdbcChatLinksRepository;
-    private final BotClient botClient;
+    private final SenderOfTheLinkUpdate senderOfTheLinkUpdate;
     private final URLParser parser;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final Long timeLimitMs = 50000L;
+
 
 
     public void updateLinks() {
@@ -37,7 +38,7 @@ public class JooqLinkUpdateService implements LinkUpdateService {
             Timestamp newTime = getUpdateTime(link);
             if (link.getLastUpdate().compareTo(newTime) < 0) {
                 linkRepository.updateLinkUpdateTime(newTime, link.getId());
-                botClient.postUpdate(
+                senderOfTheLinkUpdate.send(
                         link.getId(),
                         link.getLink(),
                         "Обновление",

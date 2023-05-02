@@ -5,6 +5,9 @@ springdoc:
     path: /swagger-ui.html
 
 app:
+  rabbit-queue: queue
+  rabbit-exchange: exchange
+  use-queue: true
   database-access-type: jpa
   scheduler:
     interval: 10000

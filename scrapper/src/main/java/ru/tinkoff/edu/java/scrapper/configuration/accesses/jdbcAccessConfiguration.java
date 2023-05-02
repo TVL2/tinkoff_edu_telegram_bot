@@ -11,7 +11,7 @@ import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.jdbc.JdbcChatService;
 import ru.tinkoff.edu.java.scrapper.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.java.scrapper.service.jdbc.JdbcLinkUpdateService;
-import ru.tinkoff.edu.java.scrapper.web.BotClient;
+import ru.tinkoff.edu.java.scrapper.service.senders.SenderOfTheLinkUpdate;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 
@@ -36,13 +36,13 @@ public class jdbcAccessConfiguration {
     @Bean
     JdbcLinkUpdateService linkUpdateService(JdbcLinkRepository linkRepository,
                                         JdbcChatLinksRepository chatLinksRepository,
-                                        BotClient botClient,
+                                        SenderOfTheLinkUpdate senderOfTheLinkUpdate,
                                         URLParser parser,
                                         GitHubClient gitHubClient,
                                         StackOverflowClient stackOverflowClient
     ) {
         return new JdbcLinkUpdateService(linkRepository,
-                chatLinksRepository, botClient, parser, gitHubClient, stackOverflowClient);
+                chatLinksRepository, senderOfTheLinkUpdate, parser, gitHubClient, stackOverflowClient);
     }
 
 }
