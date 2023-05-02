@@ -1,19 +1,21 @@
-package scrapper.repositories;
+package ru.tinkoff.edu.java.scrapper.repositories.jdbc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatLinksRepository;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatRepository;
-import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcLinkRepository;
-import scrapper.JdbcRepositoryEnvironment;
+import ru.tinkoff.edu.java.scrapper.repositories.IntegrationEnvironment;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-public class JdbcChatLinksRepositoryTest extends JdbcRepositoryEnvironment {
+@ContextConfiguration(classes = {JdbcChatRepository.class, JdbcChatLinksRepository.class, JdbcLinkRepository.class})
+@JdbcTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class JdbcChatLinksRepositoryTest extends IntegrationEnvironment {
 
     @Autowired
     JdbcChatLinksRepository chatLinksRepository;

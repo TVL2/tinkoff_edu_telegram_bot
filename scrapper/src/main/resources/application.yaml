@@ -5,8 +5,11 @@ springdoc:
     path: /swagger-ui.html
 
 app:
+  database-access-type: jpa
   scheduler:
     interval: 10000
+
+
 
 server:
   port: 8081

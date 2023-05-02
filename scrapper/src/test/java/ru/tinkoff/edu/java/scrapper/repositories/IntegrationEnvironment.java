@@ -1,4 +1,4 @@
-package scrapper;
+package ru.tinkoff.edu.java.scrapper.repositories;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -7,13 +7,14 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.DirectoryResourceAccessor;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
-
+@Testcontainers
 public class IntegrationEnvironment {
     public static final PostgreSQLContainer<?> POSTGRES_SQL_CONTAINER;
 

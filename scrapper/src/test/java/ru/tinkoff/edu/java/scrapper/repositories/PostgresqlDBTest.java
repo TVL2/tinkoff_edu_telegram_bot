@@ -1,4 +1,4 @@
-package scrapper;
+package ru.tinkoff.edu.java.scrapper.repositories;
 
 import org.junit.jupiter.api.Test;
 

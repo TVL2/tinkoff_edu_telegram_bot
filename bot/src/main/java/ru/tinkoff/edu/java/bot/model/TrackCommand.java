@@ -30,7 +30,7 @@ public class TrackCommand implements Command {
         if (link != null) {
             LinkResponse response = scrapperClient.addLink(id, URI.create(link));
             if (response == null) {
-                return "Добавьте чат, команда /start!";
+                return "Возможно не добавлен чат(команда /start) или ссылка некорректна.";
             }
             return "Cсылка " + response.url() + " добавлена!";
         }
