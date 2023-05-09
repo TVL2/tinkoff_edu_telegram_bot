@@ -10,7 +10,13 @@ import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, @NotNull Scheduler scheduler, AccessType databaseAccessType) {
+public record ApplicationConfig(@NotNull String test,
+                                @NotNull Scheduler scheduler,
+                                AccessType databaseAccessType,
+                                String rabbitQueue,
+                                String rabbitExchange,
+                                boolean useQueue
+                                ) {
 
     record Scheduler(Duration interval) {
     }

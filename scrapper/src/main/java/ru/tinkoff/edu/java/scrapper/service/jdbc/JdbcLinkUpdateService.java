@@ -8,8 +8,8 @@ import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcChatLinksRepository;
 import ru.tinkoff.edu.java.scrapper.repositories.jdbc.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdateService;
+import ru.tinkoff.edu.java.scrapper.service.senders.SenderOfTheLinkUpdate;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
-import ru.tinkoff.edu.java.scrapper.web.BotClient;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 
@@ -23,11 +23,12 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
 
     private final JdbcLinkRepository linkRepository;
     private final JdbcChatLinksRepository jdbcChatLinksRepository;
-    private final BotClient botClient;
+    private final SenderOfTheLinkUpdate senderOfTheLinkUpdate;
     private final URLParser parser;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final Long timeLimitMs = 50000L;
+
 
     public void updateLinks() {
         Timestamp temporaryFacet = new Timestamp(System.currentTimeMillis() - timeLimitMs);
@@ -36,7 +37,7 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
             Timestamp newTime = getUpdateTime(link);
             if (link.getLastUpdate().compareTo(newTime) < 0) {
                 linkRepository.updateLinkUpdateTime(newTime, link.getId());
-                botClient.postUpdate(
+                senderOfTheLinkUpdate.send(
                         link.getId(),
                         link.getLink(),
                         "Обновление",

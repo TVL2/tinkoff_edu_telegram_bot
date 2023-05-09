@@ -11,8 +11,8 @@ import ru.tinkoff.edu.java.scrapper.entity.jpa.JpaLink;
 import ru.tinkoff.edu.java.scrapper.repositories.jpa.ChatLinksRepository;
 import ru.tinkoff.edu.java.scrapper.repositories.jpa.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdateService;
+import ru.tinkoff.edu.java.scrapper.service.senders.SenderOfTheLinkUpdate;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.BadLink;
-import ru.tinkoff.edu.java.scrapper.web.BotClient;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 
@@ -27,7 +27,7 @@ public class JpaLinkUpdateService implements LinkUpdateService {
 
     private final LinkRepository linkRepository;
     private final ChatLinksRepository chatLinksRepository;
-    private final BotClient botClient;
+    private final SenderOfTheLinkUpdate senderOfTheLinkUpdate;
     private final URLParser parser;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
@@ -44,7 +44,7 @@ public class JpaLinkUpdateService implements LinkUpdateService {
             if (link.getLastUpdate().compareTo(newTime) < 0) {
                 Long id = link.getId();
                 linkRepository.updateLinkUpdateTime(newTime, id);
-                botClient.postUpdate(
+                senderOfTheLinkUpdate.send(
                         id,
                         link.getLink(),
                         "Обновление",

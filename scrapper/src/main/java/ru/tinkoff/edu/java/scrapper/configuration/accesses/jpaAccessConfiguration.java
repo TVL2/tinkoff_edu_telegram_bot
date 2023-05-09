@@ -11,7 +11,7 @@ import ru.tinkoff.edu.java.scrapper.repositories.jpa.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.jpa.JpaChatService;
 import ru.tinkoff.edu.java.scrapper.service.jpa.JpaLinkService;
 import ru.tinkoff.edu.java.scrapper.service.jpa.JpaLinkUpdateService;
-import ru.tinkoff.edu.java.scrapper.web.BotClient;
+import ru.tinkoff.edu.java.scrapper.service.senders.SenderOfTheLinkUpdate;
 import ru.tinkoff.edu.java.scrapper.web.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.web.StackOverflowClient;
 
@@ -34,13 +34,13 @@ public class jpaAccessConfiguration {
     @Bean
     JpaLinkUpdateService linkUpdateService(LinkRepository linkRepository,
                                         ChatLinksRepository chatLinksRepository,
-                                        BotClient botClient,
+                                        SenderOfTheLinkUpdate senderOfTheLinkUpdate,
                                         URLParser parser,
                                         GitHubClient gitHubClient,
                                         StackOverflowClient stackOverflowClient
     ) {
         return new JpaLinkUpdateService(linkRepository,
-                chatLinksRepository, botClient, parser, gitHubClient, stackOverflowClient);
+                chatLinksRepository, senderOfTheLinkUpdate, parser, gitHubClient, stackOverflowClient);
     }
 
 }
